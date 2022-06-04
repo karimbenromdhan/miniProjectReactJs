@@ -1,0 +1,88 @@
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../actions/userActions";
+import Error from "../components/Error";
+import Loader from "../components/Loader";
+
+const Login = () => {
+	const dispatch = useDispatch();
+	const loginReducerState = useSelector((state) => state.loginReducer);
+	const { error, loading, success } = loginReducerState;
+
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+
+	const handleLogin = (e) => {
+		e.preventDefault();
+
+		const user = {
+			email: email,
+			password: password,
+		};
+		dispatch(loginUser(user));
+	};
+
+	useEffect(() => {
+		if (localStorage.getItem("currentUser")) {
+			window.location.href = "/";
+		}
+		window.document.title = "Login | SleekStore ";
+	}, []);
+
+	return (
+		<div>
+			<div className="row justify-content-center align-items-center">
+				<h2 className="text-center m-3">
+					Login &nbsp;<i class="fa fa-sign-in" aria-hidden="true"></i>
+				</h2>
+				<div className="text-center">
+					{success && <Loader />}
+					{loading && <Loader />}
+				</div>
+				<div className="col-md-4 p-3" style={{ marginTop: "20px" }}>
+					<div className="div">
+
+						{error && !loading && <Error error="email ou mot de passe invalide" />}
+						{!loading && (
+							<>
+								<form onSubmit={handleLogin}>
+									<input
+										required
+										type="email"
+										className="form-control"
+										placeholder="Email"
+										value={email}
+										onChange={(e) => setEmail(e.target.value)}
+									/>
+
+									<input
+										required
+										type="password"
+										className="form-control"
+										placeholder="le mot de passe"
+										value={password}
+										onChange={(e) => setPassword(e.target.value)}
+									/>
+
+									<button
+										type="submit"
+										className="btn btn-primary btn-block mt-3 login-btn m-auto"
+									>
+										Connexion
+									</button>
+								</form>
+							</>
+						)}
+						<h1 className="text-center mt-4">
+						Vous n'avez pas de compte ?{" "}
+							<Link to="/register">Cliquez ici pour vous inscrire</Link>
+						</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+	);
+};
+
+export default Login;
