@@ -26,8 +26,8 @@ function ProductsList() {
 						<th>Price</th>
 						<th>Stock</th>
 						<th>Product ID</th>
-						<th>Edit Product</th>
-						<th>Delete Product</th>
+						<th>Supprimer le produit</th>
+						<th>Modifier le produit</th>
 					</tr>
 				</thead>
 				<tbody>
